@@ -6,9 +6,12 @@ import cv2
 import numpy as np
 import torch
 import trimesh
+
+
 from PIL import Image
 
 from gaussian_splatting.utils.graphics_utils import focal2fov
+from .insta360_utils import Insta360PinholeDataset
 
 try:
     import pyrealsense2 as rs
@@ -484,7 +487,7 @@ class RealsenseDataset(BaseDataset):
                 self.profile.get_stream(rs.stream.depth)
             )
             self.depth_intrinsics = self.depth_profile.get_intrinsics()
-        
+
         
 
 
@@ -519,6 +522,7 @@ class RealsenseDataset(BaseDataset):
         return image, depth, pose
 
 
+
 def load_dataset(args, path, config):
     if config["Dataset"]["type"] == "tum":
         return TUMDataset(args, path, config)
@@ -528,5 +532,7 @@ def load_dataset(args, path, config):
         return EurocDataset(args, path, config)
     elif config["Dataset"]["type"] == "realsense":
         return RealsenseDataset(args, path, config)
+    elif config["Dataset"]["type"] == "insta360_pinhole":
+        return Insta360PinholeDataset(args, path, config)
     else:
         raise ValueError("Unknown dataset type")

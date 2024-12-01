@@ -222,7 +222,9 @@ class FrontEnd(mp.Process):
             cur_frame_visibility_filter, occ_aware_visibility[last_keyframe_idx]
         ).count_nonzero()
         point_ratio_2 = intersection / union
-        return (point_ratio_2 < kf_overlap and dist_check2) or dist_check
+        ret_val = (point_ratio_2 < kf_overlap and dist_check2) or dist_check
+        print("is keyframe", ret_val)
+        return ret_val
 
     def add_to_window(
         self, cur_frame_idx, cur_frame_visibility_filter, occ_aware_visibility, window
@@ -407,11 +409,13 @@ class FrontEnd(mp.Process):
                 if self.requested_keyframe > 0:
                     self.cleanup(cur_frame_idx)
                     cur_frame_idx += 1
+                    print("boutta continue")
                     continue
 
                 last_keyframe_idx = self.current_window[0]
                 check_time = (cur_frame_idx - last_keyframe_idx) >= self.kf_interval
                 curr_visibility = (render_pkg["n_touched"] > 0).long()
+                print("portion visibility", curr_visibility.sum() / len(curr_visibility))
                 create_kf = self.is_keyframe(
                     cur_frame_idx,
                     last_keyframe_idx,

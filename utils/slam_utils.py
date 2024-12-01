@@ -94,7 +94,8 @@ def get_loss_mapping(config, image, depth, viewpoint, opacity, initialization=Fa
     else:
         image_ab = (torch.exp(viewpoint.exposure_a)) * image + viewpoint.exposure_b
     if config["Training"]["monocular"]:
-        return get_loss_mapping_rgb(config, image_ab, depth, viewpoint)
+        loss_mapping = get_loss_mapping_rgb(config, image_ab, depth, viewpoint)
+        return loss_mapping
     return get_loss_mapping_rgbd(config, image_ab, depth, viewpoint)
 
 

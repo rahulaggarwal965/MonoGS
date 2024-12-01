@@ -315,6 +315,7 @@ class BackEnd(mp.Process):
                     if viewpoint.uid == 0:
                         continue
                     update_pose(viewpoint)
+                    print("updated viewpoint")
         return gaussian_split
 
     def color_refinement(self):
@@ -383,6 +384,7 @@ class BackEnd(mp.Process):
                     self.push_to_frontend()
             else:
                 data = self.backend_queue.get()
+                print("data", data)
                 if data[0] == "stop":
                     break
                 elif data[0] == "pause":
