@@ -74,6 +74,6 @@ model_params:
   data_device: "cuda"
 
 pipeline_params:
-  separate_sh: False
+  separate_sh: True
   convert_SHs_python: False
   compute_cov3D_python: False
